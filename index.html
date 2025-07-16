@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>數字易經計算機</title>
+  <style>
+    body {
+      font-family: 'Arial';
+      padding: 20px;
+      background: #f2f2f2;
+    }
+    h1 {
+      text-align: center;
+    }
+    .input-area {
+      margin: 20px auto;
+      width: 100%;
+      max-width: 500px;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    table {
+      margin: 20px auto;
+      border-collapse: collapse;
+      width: 90%;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 6px 12px;
+      text-align: left;
+      vertical-align: top;
+      position: relative;
+    }
+    td .number {
+      display: block;
+      padding-top: 10px;
+      font-size: 16px;
+      text-align: center;
+    }
+    td .label {
+      font-size: 10px;
+      color: #666;
+      position: absolute;
+      top: 2px;
+      left: 4px;
+    }
+    td input {
+      width: 100%;
+      height: 100%;
+      border: none;
+      text-align: center;
+      font-size: 16px;
+      padding-top: 12px;
+      box-sizing: border-box;
+    }
+    .table-box {
+      margin-top: 30px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>數字易經計算機</h1>
+  <div class="input-area">
+    <label for="day">出生「日」：</label>
+    <input type="number" id="day" min="1" max="31">
+    <label for="month">出生「月」：</label>
+    <input type="number" id="month" min="1" max="12">
+    <label for="year">出生「西元年」：</label>
+    <input type="number" id="year" min="1900" max="2099">
+    <button onclick="calculate()">計算</button>
+  </div>
+  
+  <table>
+    <tr>
+      <td><label>A</label><input id="cellA" readonly></td>
+      <td><label>B</label><input id="cellB" readonly></td>
+      <td></td>
+      <td><label>D</label><input id="cellD" readonly></td>
+      <td><label>E</label><input id="cellE" readonly></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><label>C</label><input id="cellC" readonly></td>
+      <td></td>
+      <td><label>F</label><input id="cellF" readonly></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td><label>G</label><input id="cellG" readonly></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><label>H</label><input id="cellH" readonly></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><label>I</label><input id="cellI" readonly></td>
+    </tr>
+  </table>
+  <div class="table-box" id="tableArea"></div>
+  <script>
+    function digitSum(n) {
+      return n.toString().split('').reduce((sum, d) => sum + parseInt(d), 0);
+    }
+    function reduceToOneDigit(n) {
+      while (n > 9) n = digitSum(n);
+      return n;
+    }
+    function updateGrid(values) {
+      const keys = ["A","B","C","D","E","F","G","H","I"];
+      keys.forEach(k => {
+        document.getElementById(`cell${k}`).value = values[k];
+      });
+    }
+    function calculate() {
+      const day = document.getElementById("day").value;
+      const month = document.getElementById("month").value;
+      const year = document.getElementById("year").value;
+      if (!day || !month || !year) {
+        alert("請輸入完整的出生年月日");
+        return;
+      }
+      const dayStr = day.toString().padStart(2, '0');
+      const monthStr = month.toString().padStart(2, '0');
+      const yearStr = year.toString().padStart(4, '0');
+      const A = reduceToOneDigit(parseInt(dayStr[0]) + parseInt(dayStr[1]));
+      const B = reduceToOneDigit(parseInt(monthStr[0]) + parseInt(monthStr[1]));
+      const C = reduceToOneDigit(A + B);
+      const D = reduceToOneDigit(parseInt(yearStr[0]) + parseInt(yearStr[1]));
+      const E = reduceToOneDigit(parseInt(yearStr[2]) + parseInt(yearStr[3]));
+      const F = reduceToOneDigit(D + E);
+      const G = reduceToOneDigit(C + F);
+      const H = reduceToOneDigit(F + G);
+      const I = reduceToOneDigit(C + G);
+      const J = reduceToOneDigit(H + I);
+      const hiddenC = reduceToOneDigit(C + C);
+      const hiddenF = reduceToOneDigit(F + F);
+      const hiddenG = reduceToOneDigit(G + G);
+      const N = reduceToOneDigit(D + F);
+      const O = reduceToOneDigit(E + F);
+      const K = reduceToOneDigit(A + C);
+      const L = reduceToOneDigit(B + C);
+      const M = reduceToOneDigit(K + L);
+      const P = reduceToOneDigit(N + O);
+      updateGrid({ A, B, C, D, E, F, G, H, I });
+      document.getElementById("tableArea").innerHTML = `
+        <h2>數字組合分析</h2>
+        <table>
+          <thead>
+            <tr><th>代碼</th><th>數字</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>① 父基因（事業）</td><td><span class='label'>ABC</span><span class='number'>${A}${B}${C}</span></td></tr>
+            <tr><td>② 母基因（婚姻）</td><td><span class='label'>DEF</span><span class='number'>${D}${E}${F}</span></td></tr>
+            <tr><td>③ 主性格</td><td><span class='label'>CFG</span><span class='number'>${C}${F}${G}</span></td></tr>
+            <tr><td>④ 人生過程1</td><td><span class='label'>CGI</span><span class='number'>${C}${G}${I}</span></td></tr>
+            <tr><td>⑤ 人生過程2</td><td><span class='label'>FGH</span><span class='number'>${F}${G}${H}</span></td></tr>
+            <tr><td>⑥ 子女/下屬</td><td><span class='label'>HIJ</span><span class='number'>${H}${I}${J}</span></td></tr>
+            <tr><td>⑦ 事業過程1</td><td><span class='label'>ACK</span><span class='number'>${A}${C}${K}</span></td></tr>
+            <tr><td>⑧ 事業過程2</td><td><span class='label'>BCL</span><span class='number'>${B}${C}${L}</span></td></tr>
+            <tr><td>⑨ 當下朋友</td><td><span class='label'>KLM</span><span class='number'>${K}${L}${M}</span></td></tr>
+            <tr><td>⑩ 婚姻過程1</td><td><span class='label'>DFN</span><span class='number'>${D}${F}${N}</span></td></tr>
+            <tr><td>⑪ 婚姻過程2</td><td><span class='label'>EFO</span><span class='number'>${E}${F}${O}</span></td></tr>
+            <tr><td>⑫ 未來財富/健康/子女（晚年）</td><td><span class='label'>NOP</span><span class='number'>${N}${O}${P}</span></td></tr>
+            <tr><td>⑬ 隱藏號</td><td><span class='label'>CFG+CFG</span><span class='number'>${hiddenC}${hiddenF}${hiddenG}</span></td></tr>
+          </tbody>
+        </table>`;
+    }
+  </script>
+</body>
+</html>
