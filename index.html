@@ -27,9 +27,11 @@
       margin-top: 10px;
     }
     input[type="number"] {
-      width: 100%;
+      width: calc(100% - 20px);
       padding: 10px;
       font-size: 16px;
+      box-sizing: border-box;
+      margin-top: 5px;
     }
     button {
       margin-top: 20px;
@@ -94,6 +96,25 @@
   </div>
   
   <table>
+	<tr>
+      <td>
+        <div style="font-size: 12px; text-align: left;">日期</div>
+        <input type="text" id="inputDay" readonly style="width: 100%; text-align: center;">
+      </td>
+      <td>
+        <div style="font-size: 12px; text-align: left;">月份</div>
+        <input type="text" id="inputMonth" readonly style="width: 100%; text-align: center;">
+      </td>
+      <td></td>
+      <td>
+        <div style="font-size: 12px; text-align: left;">西元年份</div>
+        <input type="text" id="inputYear1" readonly style="width: 100%; text-align: center;">
+      </td>
+      <td>
+        <div style="font-size: 12px; text-align: left;">西元年份</div>
+        <input type="text" id="inputYear2" readonly style="width: 100%; text-align: center;">
+      </td>
+    </tr>
     <tr>
       <td><label>A</label><input id="cellA" readonly></td>
       <td><label>B</label><input id="cellB" readonly></td>
@@ -149,6 +170,13 @@
       const dayStr = day.toString().padStart(2, '0');
       const monthStr = month.toString().padStart(2, '0');
       const yearStr = year.toString().padStart(4, '0');
+
+      // 顯示輸入的日期值
+      document.getElementById("inputDay").value = day;
+      document.getElementById("inputMonth").value = month;
+      document.getElementById("inputYear1").value = yearStr.substring(0, 2);
+      document.getElementById("inputYear2").value = yearStr.substring(2);
+
       const A = reduceToOneDigit(parseInt(dayStr[0]) + parseInt(dayStr[1]));
       const B = reduceToOneDigit(parseInt(monthStr[0]) + parseInt(monthStr[1]));
       const C = reduceToOneDigit(A + B);
@@ -169,6 +197,7 @@
       const M = reduceToOneDigit(K + L);
       const P = reduceToOneDigit(N + O);
       updateGrid({ A, B, C, D, E, F, G, H, I });
+
       document.getElementById("tableArea").innerHTML = `
         <h2>數字組合分析</h2>
         <table>
