@@ -95,6 +95,13 @@
       margin-top: 30px;
       text-align: center;
     }
+    .centered-th {
+      text-align: center;
+      vertical-align: middle;
+    }
+	.hidden-table td:empty {
+      border: none;
+    }
   </style>
 </head>
 <body>
@@ -109,7 +116,14 @@
     <button onclick="calculate()">計算</button>
   </div>
 
-  <table>
+  <table class="hidden-table">
+    <tr>
+      <td></td>
+      <td></td>
+      <td><label>本源夢想 A+E+G</label><input id="cellAEG" readonly></td>
+      <td></td>
+      <td></td>
+    </tr>
     <tr>
       <td><div style="font-size: 12px; text-align: left;">日期</div><input type="text" id="inputDay" readonly></td>
       <td><div style="font-size: 12px; text-align: left;">月份</div><input type="text" id="inputMonth" readonly></td>
@@ -139,11 +153,11 @@
       <td></td>
     </tr>
     <tr>
+	  <td></td>
       <td><label>H=F+G</label><input id="cellH" readonly></td>
       <td></td>
-      <td></td>
-      <td></td>
       <td><label>I=C+G</label><input id="cellI" readonly></td>
+      <td></td>
     </tr>
     <tr>
       <td colspan="2">
@@ -164,9 +178,9 @@
     </tr>
     <tr>
       <td></td>
+      <td></td>
       <td><label>J=H+I</label><input id="cellJ" readonly></td>
       <td></td>
-      <td><label>本源夢想 A+E+G</label><input id="cellAEG" readonly></td>
       <td></td>
     </tr>
   </table>
@@ -180,6 +194,31 @@
       while (n > 9) n = digitSum(n);
       return n;
     }
+	function countElements(values) {
+      const elementMap = { 金: 0, 木: 0, 水: 0, 火: 0, 土: 0 };
+      values.forEach(v => {
+        if ([1, 6].includes(v)) elementMap['金']++;
+        if ([2, 7].includes(v)) elementMap['水']++;
+        if ([3, 8].includes(v)) elementMap['火']++;
+        if ([4, 9].includes(v)) elementMap['木']++;
+        if (v === 5) elementMap['土']++;
+      });
+      return elementMap;
+    }
+    function getFiveElementOrder(num) {
+      const orders = {
+        1: ['金','水','木','火','土'],
+        6: ['金','水','木','火','土'],
+        2: ['水','木','火','土','金'],
+        7: ['水','木','火','土','金'],
+        3: ['火','土','金','水','木'],
+        8: ['火','土','金','水','木'],
+        4: ['木','火','土','金','水'],
+        9: ['木','火','土','金','水'],
+        5: ['土','金','水','木','火']
+      };
+      return orders[num] || ['金','木','水','火','土'];
+	}
     function updateGrid(values) {
       const keys = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","AEG"];
       keys.forEach(k => {
@@ -224,11 +263,16 @@
       const P = reduceToOneDigit(N + O);
       const AEG = reduceToOneDigit(A + E + G);
       updateGrid({ A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, AEG });
+	  
+	  const values = [A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P];
+      const elementStats = countElements(values);
+      const ordered = getFiveElementOrder(G);
+	  
       document.getElementById("tableArea").innerHTML = `
         <h2>數字組合分析</h2>
         <table>
           <thead>
-            <tr><th>代碼</th><th>數字</th></tr>
+            <tr><th>代碼</th><th class="centered-th">數字</th></tr>
           </thead>
           <tbody>
             <tr><td>① 父基因（事業）</td><td><span class='label'>ABC</span><span class='number'>${A}${B}${C}</span></td></tr>
@@ -245,6 +289,42 @@
             <tr><td>⑫ 未來財富/健康/子女（晚年）</td><td><span class='label'>NOP</span><span class='number'>${N}${O}${P}</span></td></tr>
             <tr><td>⑬ 隱藏號</td><td><span class='label'>CFG+CFG</span><span class='number'>${hiddenC}${hiddenF}${hiddenG}</span></td></tr>
           </tbody>
+        </table>
+        <h2 style="text-align: center; margin-top: 40px;">流年五行的排列</h2>
+        <table class="hidden-table">
+          <tr>
+			<td></td>
+            <th rowspan="2" class="centered-th">自己</th>
+            <th class="centered-th">當下財富</th>
+            <th rowspan="2" class="centered-th">事業<br>伴侶</th>
+            <th rowspan="2" class="centered-th">官鬼<br>疾病</th>
+            <th class="centered-th">未來財富</th>
+          </tr>
+          <tr>
+			<td></td>
+            <th class="centered-th">子女<br>錢財</th>
+            <th class="centered-th">父母<br>貴人</th>
+          </tr>
+          <tr>
+			<td></td>
+        	<td class="centered-th">我</td>
+            <td class="centered-th">生</td>
+            <td class="centered-th">克</td>
+            <td class="centered-th">克</td>
+            <td class="centered-th">生</td>
+          </tr>
+          <tr>
+			<td></td>
+			${ordered.map(e => `<td><span class='label'>${e}</span><span class='number'>${elementStats[e]}</span></td>`).join('')}
+		  </tr>
+		  <tr>
+			<td>平衡標準</td>
+        	<td class="centered-th">4</td>
+            <td class="centered-th">4</td>
+            <td class="centered-th">4</td>
+            <td class="centered-th">4</td>
+            <td class="centered-th">3</td>
+          </tr>
         </table>`;
     }
   </script>
