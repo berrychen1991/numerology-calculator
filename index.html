@@ -19,10 +19,17 @@
       max-width: 500px;
       padding: 20px;
       background: white;
-      border-radius: 10px;
+      border-radius: 20px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
     label {
+      display: block;
+      margin-top: 1px;
+      font-size: 10px;
+      color: #666;
+      left: 4px;
+    }
+    label_big {
       display: block;
       margin-top: 10px;
     }
@@ -55,19 +62,6 @@
       vertical-align: top;
       position: relative;
     }
-    td .number {
-      display: block;
-      padding-top: 10px;
-      font-size: 16px;
-      text-align: center;
-    }
-    td .label {
-      font-size: 10px;
-      color: #666;
-      position: absolute;
-      top: 2px;
-      left: 4px;
-    }
     td input {
       width: 100%;
       height: 100%;
@@ -76,6 +70,26 @@
       font-size: 16px;
       padding-top: 12px;
       box-sizing: border-box;
+    }
+    td .label {
+      font-size: 10px;
+      color: #666;
+      position: absolute;
+      top: 2px;
+      left: 4px;
+    }
+    td .number {
+      display: block;
+      padding-top: 10px;
+      font-size: 16px;
+      text-align: center;
+    }
+    .mini-input {
+      width: 32%;
+      height: 100%;
+      display: inline-block;
+      box-sizing: border-box;
+      padding: 4px;
     }
     .table-box {
       margin-top: 30px;
@@ -86,34 +100,22 @@
 <body>
   <h1>數字易經計算機</h1>
   <div class="input-area">
-    <label for="day">出生「日」：</label>
+    <label_big for="day">出生「日」：</label_big>
     <input type="number" id="day" min="1" max="31">
-    <label for="month">出生「月」：</label>
+    <label_big for="month">出生「月」：</label_big>
     <input type="number" id="month" min="1" max="12">
-    <label for="year">出生「西元年」：</label>
+    <label_big for="year">出生「西元年」：</label_big>
     <input type="number" id="year" min="1900" max="2099">
     <button onclick="calculate()">計算</button>
   </div>
-  
+
   <table>
-	<tr>
-      <td>
-        <div style="font-size: 12px; text-align: left;">日期</div>
-        <input type="text" id="inputDay" readonly style="width: 100%; text-align: center;">
-      </td>
-      <td>
-        <div style="font-size: 12px; text-align: left;">月份</div>
-        <input type="text" id="inputMonth" readonly style="width: 100%; text-align: center;">
-      </td>
+    <tr>
+      <td><div style="font-size: 12px; text-align: left;">日期</div><input type="text" id="inputDay" readonly></td>
+      <td><div style="font-size: 12px; text-align: left;">月份</div><input type="text" id="inputMonth" readonly></td>
       <td></td>
-      <td>
-        <div style="font-size: 12px; text-align: left;">西元年份</div>
-        <input type="text" id="inputYear1" readonly style="width: 100%; text-align: center;">
-      </td>
-      <td>
-        <div style="font-size: 12px; text-align: left;">西元年份</div>
-        <input type="text" id="inputYear2" readonly style="width: 100%; text-align: center;">
-      </td>
+      <td><div style="font-size: 12px; text-align: left;">西元年份</div><input type="text" id="inputYear1" readonly></td>
+      <td><div style="font-size: 12px; text-align: left;">西元年份</div><input type="text" id="inputYear2" readonly></td>
     </tr>
     <tr>
       <td><label>A</label><input id="cellA" readonly></td>
@@ -137,13 +139,38 @@
       <td></td>
     </tr>
     <tr>
-      <td><label>H</label><input id="cellH" readonly></td>
+      <td><label>H=F+G</label><input id="cellH" readonly></td>
       <td></td>
       <td></td>
       <td></td>
-      <td><label>I</label><input id="cellI" readonly></td>
+      <td><label>I=C+G</label><input id="cellI" readonly></td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <div style="display: flex; justify-content: space-between;">
+          <div class="mini-input"><label>M=K+L</label><input id="cellM" readonly></div>
+          <div class="mini-input"><label>L=B+C</label><input id="cellL" readonly></div>
+          <div class="mini-input"><label>K=A+C</label><input id="cellK" readonly></div>
+        </div>
+      </td>
+      <td></td>
+      <td colspan="2">
+        <div style="display: flex; justify-content: space-between;">
+          <div class="mini-input"><label>N=D+F</label><input id="cellN" readonly></div>
+          <div class="mini-input"><label>O=E+F</label><input id="cellO" readonly></div>
+          <div class="mini-input"><label>P=N+O</label><input id="cellP" readonly></div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><label>J=H+I</label><input id="cellJ" readonly></td>
+      <td></td>
+      <td><label>本源夢想 A+E+G</label><input id="cellAEG" readonly></td>
+      <td></td>
     </tr>
   </table>
+
   <div class="table-box" id="tableArea"></div>
   <script>
     function digitSum(n) {
@@ -154,7 +181,7 @@
       return n;
     }
     function updateGrid(values) {
-      const keys = ["A","B","C","D","E","F","G","H","I"];
+      const keys = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","AEG"];
       keys.forEach(k => {
         document.getElementById(`cell${k}`).value = values[k];
       });
@@ -171,7 +198,6 @@
       const monthStr = month.toString().padStart(2, '0');
       const yearStr = year.toString().padStart(4, '0');
 
-      // 顯示輸入的日期值
       document.getElementById("inputDay").value = day;
       document.getElementById("inputMonth").value = month;
       document.getElementById("inputYear1").value = yearStr.substring(0, 2);
@@ -196,8 +222,8 @@
       const L = reduceToOneDigit(B + C);
       const M = reduceToOneDigit(K + L);
       const P = reduceToOneDigit(N + O);
-      updateGrid({ A, B, C, D, E, F, G, H, I });
-
+      const AEG = reduceToOneDigit(A + E + G);
+      updateGrid({ A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, AEG });
       document.getElementById("tableArea").innerHTML = `
         <h2>數字組合分析</h2>
         <table>
