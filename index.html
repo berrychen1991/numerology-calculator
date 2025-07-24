@@ -106,14 +106,16 @@
 </head>
 <body>
   <h1>數字易經計算機</h1>
-  <div class="input-area">
+    <div class="input-area">
     <label_big for="day">出生「日」：</label_big>
     <input type="number" id="day" min="1" max="31">
     <label_big for="month">出生「月」：</label_big>
     <input type="number" id="month" min="1" max="12">
     <label_big for="year">出生「西元年」：</label_big>
     <input type="number" id="year" min="1900" max="2099">
-    <button onclick="calculate()">計算</button>
+    <button onclick="calculate('normal')">計算</button>
+    <button onclick="calculate('month')">流月</button>
+    <button onclick="calculate('day')">流日</button>
   </div>
 
   <table class="hidden-table">
@@ -225,14 +227,28 @@
         document.getElementById(`cell${k}`).value = values[k];
       });
     }
-    function calculate() {
-      const day = document.getElementById("day").value;
-      const month = document.getElementById("month").value;
-      const year = document.getElementById("year").value;
+    function calculate(mode) {
+      let day = parseInt(document.getElementById("day").value);
+      let month = parseInt(document.getElementById("month").value);
+      let year = parseInt(document.getElementById("year").value);
+      const sysMonth = new Date().getMonth() + 1;
+      const sysDay = new Date().getDate();
+      const sysYear = new Date().getFullYear();
+
       if (!day || !month || !year) {
         alert("請輸入完整的出生年月日");
         return;
       }
+      if (mode === 'month') {
+        year = sysYear;
+        month = month + sysMonth;
+      } else if (mode === 'day') {
+        year = sysYear;
+        month = month + sysMonth;
+        day = day + sysDay;
+      } // for normal mode do nothing
+
+
       const dayStr = day.toString().padStart(2, '0');
       const monthStr = month.toString().padStart(2, '0');
       const yearStr = year.toString().padStart(4, '0');
@@ -246,7 +262,8 @@
       const B = reduceToOneDigit(parseInt(monthStr[0]) + parseInt(monthStr[1]));
       const C = reduceToOneDigit(A + B);
       const D = reduceToOneDigit(parseInt(yearStr[0]) + parseInt(yearStr[1]));
-      const E = reduceToOneDigit(parseInt(yearStr[2]) + parseInt(yearStr[3]));
+      let E = reduceToOneDigit(parseInt(yearStr[2])+parseInt(yearStr[3]));
+      if(yearStr === '2000') { E = 5; }
       const F = reduceToOneDigit(D + E);
       const G = reduceToOneDigit(C + F);
       const H = reduceToOneDigit(F + G);
