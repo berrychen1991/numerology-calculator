@@ -1,253 +1,704 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Berry Chen | Projects</title>
+  <title>數字易經計算機 | 專業版</title>
+  <!-- 引入 Google Fonts 讓字體更美觀 -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary-color: #2c5f58; /* 深青色 */
+      --secondary-color: #d4a055; /* 金色 */
+      --bg-color: #f4f6f5; /* 淺灰白 */
+      --card-bg: #ffffff;
+      --text-main: #333;
+      --text-light: #666;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #0d1117;
-      color: #e6edf3;
-      min-height: 100vh;
+      font-family: 'Noto Sans TC', sans-serif;
+      background: var(--bg-color);
+      color: var(--text-main);
+      margin: 0;
+      padding: 20px 10px;
+      line-height: 1.6;
     }
 
-    header {
-      padding: 60px 24px 40px;
+    h1, h2 {
+      font-family: 'Noto Serif TC', serif;
       text-align: center;
-      border-bottom: 1px solid #21262d;
-    }
-
-    .avatar {
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;
-      border: 3px solid #30363d;
-      margin-bottom: 16px;
-    }
-
-    header h1 {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #f0f6fc;
-    }
-
-    header p {
-      margin-top: 8px;
-      color: #8b949e;
-      font-size: 0.95rem;
-    }
-
-    .social-links {
-      margin-top: 16px;
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-    }
-
-    .social-links a {
-      color: #58a6ff;
-      text-decoration: none;
-      font-size: 0.9rem;
-      padding: 4px 12px;
-      border: 1px solid #30363d;
-      border-radius: 6px;
-      transition: border-color 0.2s, background 0.2s;
-    }
-
-    .social-links a:hover {
-      border-color: #58a6ff;
-      background: #161b22;
-    }
-
-    main {
-      max-width: 960px;
-      margin: 48px auto;
-      padding: 0 24px;
-    }
-
-    .section-title {
-      font-size: 1rem;
-      font-weight: 600;
-      color: #8b949e;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+      color: var(--primary-color);
       margin-bottom: 20px;
     }
 
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 16px;
+    h1 {
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-top: 10px;
     }
 
-    .card {
-      background: #161b22;
-      border: 1px solid #30363d;
-      border-radius: 10px;
-      padding: 20px;
+    /* 容器設定 */
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* 輸入區塊卡片 */
+    .input-card {
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      margin-bottom: 30px;
+      border-top: 5px solid var(--primary-color);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 5px;
+      color: var(--primary-color);
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-sizing: border-box;
+      background: #fafafa;
+      transition: all 0.3s;
+      font-family: 'Noto Sans TC', sans-serif;
+    }
+
+    input[type="number"]:focus {
+      border-color: var(--primary-color);
+      background: #fff;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(44, 95, 88, 0.1);
+    }
+
+    /* 按鈕群組 */
+    .btn-group {
       display: flex;
-      flex-direction: column;
       gap: 10px;
-      transition: border-color 0.2s, transform 0.15s;
-      text-decoration: none;
-      color: inherit;
+      margin-top: 25px;
     }
 
-    .card:hover {
-      border-color: #58a6ff;
+    button {
+      flex: 1;
+      padding: 12px;
+      font-size: 16px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.1s;
+      font-family: 'Noto Sans TC', sans-serif;
+    }
+
+    button:hover {
+      background-color: #1e4540;
       transform: translateY(-2px);
     }
 
-    .card-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    button:active {
+      transform: translateY(0);
     }
 
-    .card-icon {
-      font-size: 1.3rem;
+    button:nth-child(2) { background-color: #557c77; }
+    button:nth-child(3) { background-color: #7da09b; }
+
+    /* 命盤顯示區 */
+    .chart-card {
+      background: var(--card-bg);
+      padding: 20px 10px;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+      min-height: 500px; /* 增加高度以容納背景 */
     }
 
-    .card-title {
-      font-size: 1rem;
-      font-weight: 600;
-      color: #58a6ff;
+    /* 新增：命盤背景幾何圖形容器 */
+    .chart-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px 0;
     }
 
-    .card-desc {
-      font-size: 0.875rem;
-      color: #8b949e;
-      line-height: 1.5;
-      flex: 1;
+    .chart-bg-shape {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
     }
 
-    .card-footer {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .triangle-table {
+      margin: 0 auto;
+      border-collapse: separate;
+      border-spacing: 0; /* 歸零間距以更好對齊線條 */
+      width: 100%;
+      position: relative;
+      z-index: 1;
     }
 
-    .lang-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .lang-label {
-      font-size: 0.8rem;
-      color: #8b949e;
-    }
-
-    .tag {
-      font-size: 0.75rem;
-      padding: 2px 8px;
-      border-radius: 12px;
-      border: 1px solid #30363d;
-      color: #8b949e;
-      margin-left: auto;
-    }
-
-    footer {
+    .triangle-table td {
+      border: none;
+      padding: 0;
       text-align: center;
-      padding: 40px 24px;
-      color: #484f58;
-      font-size: 0.8rem;
-      border-top: 1px solid #21262d;
-      margin-top: 60px;
+      vertical-align: middle;
+      position: relative;
+      height: 70px; /* 稍微拉高間距 */
+    }
+
+    /* 圓形節點樣式 */
+    .node-input {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 2px solid var(--secondary-color);
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--primary-color);
+      background: #fff;
+      padding: 0;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      cursor: default;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .node-input:read-only:focus {
+        outline: none;
+    }
+
+    /* 節點代號標籤 (A, B, C...) */
+    .node-label {
+      font-size: 10px;
+      color: #999;
+      display: block;
+      margin-bottom: 2px;
+      text-transform: uppercase;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+    }
+    
+    .node-label.main-label {
+        color: var(--primary-color);
+    }
+
+    /* 特殊小節點 (底部計算用) */
+    .mini-group {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 8px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      border: 1px solid #eee;
+    }
+    .mini-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .mini-input {
+      width: 32px;
+      height: 32px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+    }
+
+    /* 隱藏資訊區 (日期/年份顯示) */
+    .info-row td {
+      height: 40px;
+    }
+    .info-row input {
+      border: none;
+      background: transparent;
+      text-align: center;
+      font-size: 14px;
+      color: var(--text-light);
+      width: 100%;
+      font-weight: 500;
+    }
+    .info-label {
+      font-size: 10px;
+      color: #bbb;
+    }
+
+    /* 分析結果區 */
+    .analysis-section {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .analysis-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .analysis-table th, .analysis-table td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    .analysis-table th {
+      background-color: var(--primary-color);
+      color: white;
+      font-weight: normal;
+    }
+
+    .analysis-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .analysis-table tr:hover {
+        background-color: #f9f9f9;
+    }
+
+    .result-number {
+      font-weight: bold;
+      color: var(--secondary-color);
+      font-size: 1.1em;
+      letter-spacing: 1px;
+    }
+
+    .result-code {
+      color: #999;
+      font-size: 0.8em;
+      margin-right: 8px;
+    }
+
+    /* 五行表格 */
+    .element-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      text-align: center;
+    }
+    
+    .element-table th {
+        background: #f0f4f3;
+        color: var(--primary-color);
+        padding: 10px;
+        font-size: 0.9em;
+        border: 1px solid #e0e0e0;
+    }
+    
+    .element-table td {
+        padding: 10px;
+        border: 1px solid #e0e0e0;
+    }
+
+    .element-circle {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        line-height: 24px;
+        border-radius: 50%;
+        background: var(--secondary-color);
+        color: white;
+        font-size: 12px;
+        margin-right: 5px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* RWD 微調 */
+    @media (max-width: 480px) {
+      .input-card { padding: 20px; }
+      .node-input { width: 36px; height: 36px; font-size: 16px; }
+      .triangle-table td { height: 60px; }
+      .chart-wrapper { max-width: 340px; }
     }
   </style>
 </head>
 <body>
 
-<header>
-  <img
-    class="avatar"
-    src="https://github.com/berrychen1991.png"
-    alt="Berry Chen"
-  />
-  <h1>Berry Chen</h1>
-  <p>berrychen1991 · 軟體開發 / 資料工程</p>
-  <div class="social-links">
-    <a href="https://github.com/berrychen1991" target="_blank">GitHub</a>
+<div class="container">
+  <h1>數字易經計算機</h1>
+  
+  <div class="input-card">
+    <div class="form-group">
+      <label class="form-label" for="year">出生「西元年」</label>
+      <input type="number" id="year" placeholder="例如：1985" min="1900" max="2099">
+    </div>
+    <div style="display: flex; gap: 15px;">
+        <div class="form-group" style="flex:1">
+          <label class="form-label" for="month">出生「月」</label>
+          <input type="number" id="month" placeholder="1-12" min="1" max="12">
+        </div>
+        <div class="form-group" style="flex:1">
+          <label class="form-label" for="day">出生「日」</label>
+          <input type="number" id="day" placeholder="1-31" min="1" max="31">
+        </div>
+    </div>
+    
+    <div class="btn-group">
+      <button onclick="calculate('normal')">本命計算</button>
+      <button onclick="calculate('month')">流月運勢</button>
+      <button onclick="calculate('day')">流日運勢</button>
+    </div>
   </div>
-</header>
 
-<main>
-  <p class="section-title">Projects</p>
-  <div class="projects-grid">
+  <!-- 隱藏表格改為顯示區域 -->
+  <div class="chart-card" id="chartCard" style="display:none;">
+    <h2 style="font-size: 1.2em; margin-bottom: 5px;">命盤結構</h2>
+    
+    <div class="chart-wrapper">
+        <!-- 背景幾何結構線條 (SVG) -->
+        <!-- 使用 viewBox 0 0 400 480 定義座標系 -->
+        <svg class="chart-bg-shape" viewBox="0 0 400 480" preserveAspectRatio="xMidYMid meet">
+            <defs>
+                <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#d4a055;stop-opacity:0.3" />
+                    <stop offset="100%" style="stop-color:#f5d08e;stop-opacity:0.1" />
+                </linearGradient>
+            </defs>
 
-    <a class="card" href="https://github.com/berrychen1991/0050cal" target="_blank">
-      <div class="card-header">
-        <span class="card-icon">💰</span>
-        <span class="card-title">0050cal</span>
-      </div>
-      <p class="card-desc">財務計算器，支援房貸試算與投資報酬率計算。</p>
-      <div class="card-footer">
-        <span class="lang-dot" style="background:#e34c26"></span>
-        <span class="lang-label">HTML</span>
-      </div>
-    </a>
+            <!-- 1. 外圍圓形框 (框住結構) -->
+            <circle cx="200" cy="240" r="160" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" stroke-opacity="0.4" stroke-dasharray="4,4" />
+            
+            <!-- 2. 連結線條 (模擬運算路徑) -->
+            <!-- A(50, 160) & B(120, 160) -> C(85, 230) -->
+            <line x1="60" y1="160" x2="85" y2="230" stroke="var(--primary-color)" stroke-width="1" stroke-opacity="0.2" />
+            <line x1="110" y1="160" x2="85" y2="230" stroke="var(--primary-color)" stroke-width="1" stroke-opacity="0.2" />
 
-    <a class="card" href="https://github.com/berrychen1991/numerology-calculator" target="_blank">
-      <div class="card-header">
-        <span class="card-icon">🔢</span>
-        <span class="card-title">numerology-calculator</span>
-      </div>
-      <p class="card-desc">數字命理計算器，根據生日與姓名推算命理數字。</p>
-      <div class="card-footer">
-        <span class="lang-dot" style="background:#e34c26"></span>
-        <span class="lang-label">HTML</span>
-      </div>
-    </a>
+            <!-- D(280, 160) & E(340, 160) -> F(315, 230) -->
+            <line x1="290" y1="160" x2="315" y2="230" stroke="var(--primary-color)" stroke-width="1" stroke-opacity="0.2" />
+            <line x1="340" y1="160" x2="315" y2="230" stroke="var(--primary-color)" stroke-width="1" stroke-opacity="0.2" />
+            
+            <!-- C(85, 230) & F(315, 230) -> G(200, 300) -->
+            <line x1="85" y1="230" x2="200" y2="300" stroke="var(--primary-color)" stroke-width="1" stroke-opacity="0.2" />
+            <line x1="315" y1="230" x2="200" y2="300" stroke="var(--primary-color)" stroke-width="1" stroke-opacity="0.2" />
 
-    <a class="card" href="https://github.com/berrychen1991/Fixed-point-Base-Converter" target="_blank">
-      <div class="card-header">
-        <span class="card-icon">⚙️</span>
-        <span class="card-title">Fixed-point-Base-Converter</span>
-      </div>
-      <p class="card-desc">定點數進制轉換工具，支援二進位、八進位、十六進位互轉。</p>
-      <div class="card-footer">
-        <span class="lang-dot" style="background:#e34c26"></span>
-        <span class="lang-label">HTML</span>
-      </div>
-    </a>
+            <!-- C(85, 230) & G(200, 300) -> I(140, 370) (左側子項) -->
+            <line x1="85" y1="230" x2="140" y2="370" stroke="var(--primary-color)" stroke-width="1" stroke-opacity="0.2" />
+            <line x1="200" y1="300" x2="140" y2="370" stroke="var(--primary-color)" stroke-width="1" stroke-opacity="0.2" />
 
-    <a class="card" href="https://github.com/berrychen1991/ChatGPT-Line-Bot" target="_blank">
-      <div class="card-header">
-        <span class="card-icon">🤖</span>
-        <span class="card-title">ChatGPT-Line-Bot</span>
-      </div>
-      <p class="card-desc">將 ChatGPT 接入 Line 的聊天機器人，快速部署 AI 對話功能。</p>
-      <div class="card-footer">
-        <span class="lang-dot" style="background:#3572A5"></span>
-        <span class="lang-label">Python</span>
-        <span class="tag">Fork</span>
-      </div>
-    </a>
+            <!-- F(315, 230) & G(200, 300) -> H(260, 370) (右側子項) -->
+            <line x1="315" y1="230" x2="260" y2="370" stroke="var(--primary-color)" stroke-width="1" stroke-opacity="0.2" />
+            <line x1="200" y1="300" x2="260" y2="370" stroke="var(--primary-color)" stroke-width="1" stroke-opacity="0.2" />
 
-    <a class="card" href="https://github.com/berrychen1991/pytorch-cifar100" target="_blank">
-      <div class="card-header">
-        <span class="card-icon">🧠</span>
-        <span class="card-title">pytorch-cifar100</span>
-      </div>
-      <p class="card-desc">用 PyTorch 在 CIFAR-100 上練習多種深度學習模型，包含 ResNet、VGG、MobileNet 等。</p>
-      <div class="card-footer">
-        <span class="lang-dot" style="background:#3572A5"></span>
-        <span class="lang-label">Python</span>
-        <span class="tag">Fork</span>
-      </div>
-    </a>
+            <!-- I(140, 370) & H(260, 370) -> J(200, 440) -->
+            <line x1="140" y1="370" x2="200" y2="440" stroke="var(--primary-color)" stroke-width="1" stroke-opacity="0.2" />
+            <line x1="260" y1="370" x2="200" y2="440" stroke="var(--primary-color)" stroke-width="1" stroke-opacity="0.2" />
 
+            <!-- 3. 幾何結構強化 -->
+            <!-- 倒大三角 (Outer V) -->
+            <path d="M 40 160 L 360 160 L 200 450 Z" fill="url(#goldGradient)" stroke="none" />
+            
+            <!-- 核心正三角 (G-I-H 連結 C-F 形成六芒星感) -->
+            <polygon points="200,160 300,320 100,320" fill="none" stroke="var(--secondary-color)" stroke-width="1" stroke-opacity="0.3" />
+            <polygon points="85,230 315,230 200,440" fill="none" stroke="var(--secondary-color)" stroke-width="1.5" stroke-opacity="0.5" />
+
+        </svg>
+
+        <table class="triangle-table">
+          <!-- Row 1: AEG (Summit) -->
+          <tr>
+            <td colspan="5" style="height: 60px;">
+                <div style="display:flex; flex-direction:column; align-items:center;">
+                    <span class="node-label">本源</span>
+                    <input class="node-input" id="cellAEG" readonly style="background-color: var(--primary-color); color: white; border:none; box-shadow: 0 0 15px rgba(44,95,88,0.5);">
+                </div>
+            </td>
+          </tr>
+          
+          <!-- Row 2: Info (Dates) -->
+          <tr class="info-row">
+            <td><div class="info-label">日</div><input type="text" id="inputDay" readonly></td>
+            <td><div class="info-label">月</div><input type="text" id="inputMonth" readonly></td>
+            <td></td>
+            <td><div class="info-label">年前</div><input type="text" id="inputYear1" readonly></td>
+            <td><div class="info-label">年後</div><input type="text" id="inputYear2" readonly></td>
+          </tr>
+
+          <!-- Row 3: A, B, D, E (Level 1) -->
+          <tr>
+            <td><span class="node-label">A</span><input class="node-input" id="cellA" readonly></td>
+            <td><span class="node-label">B</span><input class="node-input" id="cellB" readonly></td>
+            <td></td>
+            <td><span class="node-label">D</span><input class="node-input" id="cellD" readonly></td>
+            <td><span class="node-label">E</span><input class="node-input" id="cellE" readonly></td>
+          </tr>
+
+          <!-- Row 4: C, F (Level 2) -->
+          <tr>
+            <td></td>
+            <td style="text-align:right; padding-right:15px;"><span class="node-label main-label">C</span><input class="node-input" id="cellC" readonly></td>
+            <td></td>
+            <td style="text-align:left; padding-left:15px;"><span class="node-label main-label">F</span><input class="node-input" id="cellF" readonly></td>
+            <td></td>
+          </tr>
+
+          <!-- Row 5: G (Level 3 - Center) -->
+          <tr>
+            <td></td>
+            <td></td>
+            <td><span class="node-label main-label" style="font-size:12px;">主命 G</span><input class="node-input" id="cellG" readonly style="border-width:3px; width:48px; height:48px;"></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <!-- Row 6: I, H (Level 4 - Swapped logic: I under C+G, H under F+G) -->
+          <tr>
+            <td></td>
+            <td style="text-align:right; padding-right:5px;"><span class="node-label">I</span><input class="node-input" id="cellI" readonly></td>
+            <td></td>
+            <td style="text-align:left; padding-left:5px;"><span class="node-label">H</span><input class="node-input" id="cellH" readonly></td>
+            <td></td>
+          </tr>
+
+          <!-- Row 7: Side Groups + J (Level 5) -->
+          <tr>
+            <td colspan="2" style="vertical-align: top;">
+                <div class="mini-group" style="margin-right: 20px;">
+                    <div class="mini-item"><span class="node-label">M</span><input class="node-input mini-input" id="cellM" readonly></div>
+                    <div class="mini-item"><span class="node-label">L</span><input class="node-input mini-input" id="cellL" readonly></div>
+                    <div class="mini-item"><span class="node-label">K</span><input class="node-input mini-input" id="cellK" readonly></div>
+                </div>
+            </td>
+            
+            <!-- J is here -->
+            <td style="vertical-align: top; padding-top:10px;">
+                <span class="node-label">J</span><input class="node-input" id="cellJ" readonly>
+            </td>
+
+            <td colspan="2" style="vertical-align: top;">
+                <div class="mini-group" style="margin-left: 20px;">
+                    <div class="mini-item"><span class="node-label">N</span><input class="node-input mini-input" id="cellN" readonly></div>
+                    <div class="mini-item"><span class="node-label">O</span><input class="node-input mini-input" id="cellO" readonly></div>
+                    <div class="mini-item"><span class="node-label">P</span><input class="node-input mini-input" id="cellP" readonly></div>
+                </div>
+            </td>
+          </tr>
+        </table>
+    </div>
   </div>
-</main>
 
-<footer>
-  © 2026 Berry Chen · Built with GitHub Pages
-</footer>
+  <div class="table-box" id="tableArea"></div>
+</div>
 
+<script>
+    function digitSum(n) {
+      return n.toString().split('').reduce((sum, d) => sum + parseInt(d), 0);
+    }
+    function reduceToOneDigit(n) {
+      while (n > 9) n = digitSum(n);
+      return n;
+    }
+    function countElements(values) {
+      const elementMap = { 金: 0, 木: 0, 水: 0, 火: 0, 土: 0 };
+      values.forEach(v => {
+        if ([1, 6].includes(v)) elementMap['金']++;
+        if ([2, 7].includes(v)) elementMap['水']++;
+        if ([3, 8].includes(v)) elementMap['火']++;
+        if ([4, 9].includes(v)) elementMap['木']++;
+        if (v === 5) elementMap['土']++;
+      });
+      return elementMap;
+    }
+    function getFiveElementOrder(num) {
+      const orders = {
+        1: ['金','水','木','火','土'],
+        6: ['金','水','木','火','土'],
+        2: ['水','木','火','土','金'],
+        7: ['水','木','火','土','金'],
+        3: ['火','土','金','水','木'],
+        8: ['火','土','金','水','木'],
+        4: ['木','火','土','金','水'],
+        9: ['木','火','土','金','水'],
+        5: ['土','金','水','木','火']
+      };
+      return orders[num] || ['金','木','水','火','土'];
+    }
+    function updateGrid(values) {
+      const keys = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","AEG"];
+      keys.forEach(k => {
+        const el = document.getElementById(`cell${k}`);
+        if(el) el.value = values[k];
+      });
+      // 顯示命盤區域
+      document.getElementById('chartCard').style.display = 'block';
+    }
+
+    function calculate(mode) {
+      let day = parseInt(document.getElementById("day").value);
+      let month = parseInt(document.getElementById("month").value);
+      let year = parseInt(document.getElementById("year").value);
+      const sysMonth = new Date().getMonth() + 1;
+      const sysDay = new Date().getDate();
+      const sysYear = new Date().getFullYear();
+
+      if (!day || !month || !year) {
+        alert("請輸入完整的出生年月日");
+        return;
+      }
+      
+      let displayTitle = "本命盤分析";
+      if (mode === 'month') {
+        year = sysYear;
+        month = month + sysMonth;
+        displayTitle = "流月運勢分析";
+      } else if (mode === 'day') {
+        year = sysYear;
+        month = month + sysMonth;
+        day = day + sysDay;
+        displayTitle = "流日運勢分析";
+      }
+
+      const dayStr = day.toString().padStart(2, '0');
+      const monthStr = month.toString().padStart(2, '0');
+      const yearStr = year.toString().padStart(4, '0');
+
+      document.getElementById("inputDay").value = day;
+      document.getElementById("inputMonth").value = month;
+      document.getElementById("inputYear1").value = yearStr.substring(0, 2);
+      document.getElementById("inputYear2").value = yearStr.substring(2);
+
+      const A = reduceToOneDigit(parseInt(dayStr[0]) + parseInt(dayStr[1]));
+      const B = reduceToOneDigit(parseInt(monthStr[0]) + parseInt(monthStr[1]));
+      const C = reduceToOneDigit(A + B);
+      const D = reduceToOneDigit(parseInt(yearStr[0]) + parseInt(yearStr[1]));
+      let E = reduceToOneDigit(parseInt(yearStr[2])+parseInt(yearStr[3]));
+      if(yearStr === '2000') { E = 5; }
+      const F = reduceToOneDigit(D + E);
+      const G = reduceToOneDigit(C + F);
+      const H = reduceToOneDigit(F + G);
+      const I = reduceToOneDigit(C + G);
+      const J = reduceToOneDigit(H + I);
+      const hiddenC = reduceToOneDigit(C + C);
+      const hiddenF = reduceToOneDigit(F + F);
+      const hiddenG = reduceToOneDigit(G + G);
+      const N = reduceToOneDigit(D + F);
+      const O = reduceToOneDigit(E + F);
+      const K = reduceToOneDigit(A + C);
+      const L = reduceToOneDigit(B + C);
+      const M = reduceToOneDigit(K + L);
+      const P = reduceToOneDigit(N + O);
+      const AEG = reduceToOneDigit(A + E + G);
+      
+      updateGrid({ A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, AEG });
+      
+      const values = [A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P];
+      const elementStats = countElements(values);
+      const ordered = getFiveElementOrder(G);
+      
+      const analysisData = [
+          { name: "① 父基因（事業）", code: "ABC", val: `${A}${B}${C}` },
+          { name: "② 母基因（婚姻）", code: "DEF", val: `${D}${E}${F}` },
+          { name: "③ 主性格", code: "CFG", val: `${C}${F}${G}` },
+          { name: "④ 人生過程1", code: "CGI", val: `${C}${G}${I}` },
+          { name: "⑤ 人生過程2", code: "FGH", val: `${F}${G}${H}` },
+          { name: "⑥ 子女/下屬", code: "HIJ", val: `${H}${I}${J}` },
+          { name: "⑦ 事業過程1", code: "ACK", val: `${A}${C}${K}` },
+          { name: "⑧ 事業過程2", code: "BCL", val: `${B}${C}${L}` },
+          { name: "⑨ 當下朋友", code: "KLM", val: `${K}${L}${M}` },
+          { name: "⑩ 婚姻過程1", code: "DFN", val: `${D}${F}${N}` },
+          { name: "⑪ 婚姻過程2", code: "EFO", val: `${E}${F}${O}` },
+          { name: "⑫ 未來財富/晚年", code: "NOP", val: `${N}${O}${P}` },
+          { name: "⑬ 隱藏號", code: "隱藏", val: `${hiddenC}${hiddenF}${hiddenG}` },
+      ];
+
+      // 生成分析結果 HTML
+      let rows = analysisData.map(item => `
+        <tr>
+            <td>
+                <div>${item.name}</div>
+                <span class="result-code">${item.code}</span>
+            </td>
+            <td style="text-align:right;">
+                <span class="result-number">${item.val}</span>
+            </td>
+        </tr>
+      `).join('');
+
+      document.getElementById("tableArea").innerHTML = `
+        <div class="analysis-section">
+            <h2>${displayTitle}</h2>
+            <table class="analysis-table">
+              <thead>
+                <tr><th>分析項目</th><th style="text-align:right;">組合數字</th></tr>
+              </thead>
+              <tbody>
+                ${rows}
+              </tbody>
+            </table>
+
+            <h2 style="margin-top: 40px;">流年五行能量</h2>
+            <div style="background:white; padding:15px; border-radius:15px; box-shadow: var(--shadow);">
+                <table class="element-table">
+                  <tr>
+                    <th rowspan="2">自己</th>
+                    <th>當下財富</th>
+                    <th rowspan="2">事業<br>伴侶</th>
+                    <th rowspan="2">官鬼<br>疾病</th>
+                    <th>未來財富</th>
+                  </tr>
+                  <tr>
+                    <th>子女/錢財</th>
+                    <th>父母/貴人</th>
+                  </tr>
+                  <tr>
+                    <td style="background:#f9f9f9; font-weight:bold;">我</td>
+                    <td>生</td>
+                    <td>克</td>
+                    <td>克</td>
+                    <td>生</td>
+                  </tr>
+                  <tr>
+                    ${ordered.map(e => `
+                        <td>
+                            <div style="display:flex; flex-direction:column; align-items:center;">
+                                <span class='element-circle'>${e}</span>
+                                <span class='result-number' style="font-size:1.4em; margin-top:5px;">${elementStats[e]}</span>
+                            </div>
+                        </td>
+                    `).join('')}
+                  </tr>
+                  <tr style="font-size:0.8em; color:#888;">
+                    <td>平衡標準: 4</td>
+                    <td>3</td>
+                    <td>3</td>
+                    <td>3</td>
+                    <td>3</td>
+                  </tr>
+                </table>
+            </div>
+        </div>`;
+        
+        // 自動滾動到結果區
+        setTimeout(() => {
+            document.getElementById("chartCard").scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+    }
+</script>
 </body>
 </html>
